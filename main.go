@@ -8,11 +8,11 @@ func main() {
 
 	zero.Run(zero.Option{
 		Host:          "127.0.0.1",
-		Port:          "51817",
+		Port:          "8080",
 		AccessToken:   "",
 		NickName:      []string{"ATRI", "atri", "亚托莉", "アトリ"},
 		CommandPrefix: "",
-		SuperUsers:    []string{"1172294279"},
+		SuperUsers:    []string{""},
 	})
 	select {}
 }
