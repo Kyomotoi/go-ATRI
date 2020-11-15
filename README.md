@@ -6,6 +6,9 @@ ATRI的go实现
 
 ### 感谢
 [Mrs4s](https://github.com/Mrs4s): [go-CQHTTP](https://github.com/Mrs4s/go-cqhttp)
+
 [wdvxdr1123](https://github.com/wdvxdr1123): [ZeroBot](https://github.com/wdvxdr1123/ZeroBot)
+
 [Richard Chien](https://github.com/richardchien): [NoneBot](https://github.com/nonebot/nonebot)
+
 [NoneBot开发组](https://github.com/nonebot): [NoneBot2](https://github.com/nonebot/nonebot2)
