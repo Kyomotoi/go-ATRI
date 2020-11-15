@@ -178,7 +178,7 @@ func (c *ConfigEngine) setField(obj interface{},name string,value interface{}) e
 	return nil
 }
 
-// 从配置文件中获取Struct类型的值,这里的struct是你自己定义的根据配置文件
+// 从配置文件中获取Struct类型的值
 func (c *ConfigEngine) GetStruct(name string,s interface{}) interface{}{
 	d := c.Get(name)
 	switch d.(type){
