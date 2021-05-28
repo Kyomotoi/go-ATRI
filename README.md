@@ -4,6 +4,8 @@
 ATRI的go实现
 正在倾情撰写ing......
 
+由于本人学业问题，本项目随缘更新（（
+
 ### 感谢
 [Mrs4s](https://github.com/Mrs4s): [go-CQHTTP](https://github.com/Mrs4s/go-cqhttp)
 
