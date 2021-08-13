@@ -1,13 +1,12 @@
-module ATRI
+module github.com/Kyomotoi/go-ATRI
 
-go 1.15
+go 1.16
 
 require (
-	github.com/jonboulle/clockwork v0.2.2 // indirect
-	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
-	github.com/lestrrat-go/strftime v1.0.4 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
-	github.com/sirupsen/logrus v1.7.0
+	github.com/sirupsen/logrus v1.8.1
 	github.com/t-tomalak/logrus-easy-formatter v0.0.0-20190827215021-c074f06c5816
-	github.com/wdvxdr1123/ZeroBot v0.0.0-20210128103717-57ad4a985928
+	github.com/tidwall/gjson v1.8.1
+	github.com/wdvxdr1123/ZeroBot v1.2.2
+	github.com/yanyiwu/gojieba v1.1.2
+	gopkg.in/yaml.v2 v2.2.1
 )
