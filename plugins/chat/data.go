@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/Kyomotoi/go-ATRI/utils"
 	log "github.com/sirupsen/logrus"
-	jieba "github.com/yanyiwu/gojieba"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -168,20 +167,9 @@ func loadUserNickname(userID string) string {
 	return result
 }
 
-func dealWord(word string) []string {
-	var words []string
-	x := jieba.NewJieba()
-	defer x.Free()
-
-	words = x.CutAll(word)
-	return words
-}
-
 func Kimo(message string, userID string) (string, error) {
-	kw := dealWord(message)
-	rand.Shuffle(len(kw), func(i, j int) {
-		kw[i], kw[j] = kw[j], kw[i]
-	})
+	var repo string
+	var t []string
 
 	data, err := loadData()
 	if err != nil {
@@ -189,35 +177,17 @@ func Kimo(message string, userID string) (string, error) {
 		return "", err
 	}
 
-	repo := ""
-	for i := range kw {
-		w := kw[i]
-		a := []string{kw[i]}
-		if len(a) == 2 {
-			if a[0] == a[1] {
-				w = a[0]
-			}
-		}
-
-		if _, in := data[w]; in {
-			repo = data[w][rand.Intn(len(data[w]))]
-		}
+	for i := range data {
+		t = append(t, i)
 	}
+	rand.Shuffle(len(t), func(i, j int) {
+		t[i], t[j] = t[i], t[j]
+	})
 
-	if repo == "" {
-		var t []string
-		for i := range data {
-			t = append(t, i)
-		}
-		rand.Shuffle(len(t), func(i, j int) {
-			t[i], t[j] = t[i], t[j]
-		})
-
-		for i := range t {
-			w := t[i]
-			if strings.Contains(message, w) {
-				repo = data[w][rand.Intn(len(data[w]))]
-			}
+	for i := range t {
+		w := t[i]
+		if strings.Contains(message, w) {
+			repo = data[w][rand.Intn(len(data[w]))]
 		}
 	}
 
