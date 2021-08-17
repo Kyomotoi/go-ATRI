@@ -7,20 +7,20 @@ import (
 	"github.com/wdvxdr1123/ZeroBot/message"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"time"
 )
 
-const url = "https://api.lolicon.app/setu/v2"
+const SetuURL = "https://api.lolicon.app/setu/v2"
 
 func request(tag string) (gjson.Result, error) {
 	var u string
 
 	if tag != "" {
-		u = url + "?tag=" + tag
+		u = SetuURL + "?tag=" + url.QueryEscape(tag)
 	} else {
-		u = url
+		u = SetuURL
 	}
-
 	resp, err := http.Get(u)
 	if err != nil {
 		return gjson.Result{}, err
@@ -48,7 +48,7 @@ func request(tag string) (gjson.Result, error) {
 func RandomSetu(ctx *zero.Ctx) error {
 	j, err := request("")
 	if err != nil {
-		log.Error("Failed to request url: "+url)
+		log.Error("Failed to request url: "+SetuURL)
 		return err
 	}
 
@@ -61,16 +61,16 @@ func RandomSetu(ctx *zero.Ctx) error {
 	setu := ctx.Send(message.Image(img))
 	time.Sleep(30*time.Second)
 	ctx.DeleteMessage(setu)
+	log.Info("Recall setu: "+img)
 	return nil
 }
 
 func TagSetu(tag string, ctx *zero.Ctx) error {
 	j, err := request(tag)
 	if err != nil {
-		log.Error("Failed to request url: "+url)
+		log.Error("Failed to request url: "+SetuURL)
 		return err
 	}
-
 	title := j.Get("data.0.title").String()
 	pid := j.Get("data.0.pid").String()
 	img := j.Get("data.0.urls.original").String()

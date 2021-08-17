@@ -18,7 +18,7 @@ func checkDIR() error {
 	_, err := os.Stat(fileDIR)
 	if err != nil {
 		if !os.IsExist(err) {
-			err := os.MkdirAll(fileDIR, os.ModePerm)
+			err := os.MkdirAll(fileDIR, 0777)
 			if err != nil {
 				return err
 			}
@@ -53,7 +53,7 @@ func generateData() error {
 	}
 
 	filePath := "data/database/chat/kimo.json"
-	_ = ioutil.WriteFile(filePath, data, 0644)
+	_ = ioutil.WriteFile(filePath, data, 0777)
 	return nil
 }
 
@@ -123,7 +123,7 @@ func StoreUserNickname(userID string, nickname string) error {
 	filePath := "data/database/chat/users.json"
 	isExist := utils.IsExists(filePath)
 	if !isExist {
-		_ = ioutil.WriteFile(filePath, []byte("{}"), 0644)
+		_ = ioutil.WriteFile(filePath, []byte("{}"), 0777)
 	}
 
 	data, err := ioutil.ReadFile(filePath)
@@ -139,7 +139,7 @@ func StoreUserNickname(userID string, nickname string) error {
 	}
 	userNicknameData[userID] = nickname
 	newData, err := json.Marshal(userNicknameData)
-	_ = ioutil.WriteFile(filePath, newData, 0644)
+	_ = ioutil.WriteFile(filePath, newData, 0777)
 	return nil
 }
 
