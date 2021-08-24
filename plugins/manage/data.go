@@ -20,7 +20,7 @@ func checkDIR() {
 		if !os.IsExist(err) {
 			err := os.MkdirAll(fileDIR, 0777)
 			if err != nil {
-				log.Warning("目录 "+fileDIR+" 创建失败，请尝试手动创建")
+				log.Warning("目录 " + fileDIR + " 创建失败，请尝试手动创建")
 			}
 		}
 	}
@@ -165,7 +165,6 @@ func ControlGroupService(serv string, groupID string, isEnabled bool) {
 	data.DisableGroup = t
 	service.StoreServiceData(serv, data)
 }
-
 
 func ControlUserService(serv string, userID string, isEnabled bool) {
 	var t []string

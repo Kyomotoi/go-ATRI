@@ -20,7 +20,7 @@ func checkMaDIR() {
 		if !os.IsExist(err) {
 			err := os.MkdirAll(manageDIR, 0777)
 			if err != nil {
-				log.Warning("目录 "+manageDIR+" 创建失败，请尝试手动创建")
+				log.Warning("目录 " + manageDIR + " 创建失败，请尝试手动创建")
 			}
 		}
 	}

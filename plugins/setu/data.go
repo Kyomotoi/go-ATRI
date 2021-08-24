@@ -39,7 +39,7 @@ func request(tag string) (gjson.Result, error) {
 	j := gjson.ParseBytes(data)
 	isOK := j.Get("error").String()
 	if isOK != "" {
-		log.Error("Lolicon API exists error: "+isOK)
+		log.Error("Lolicon API exists error: " + isOK)
 		return gjson.Result{}, err
 	}
 	return j, nil
@@ -48,7 +48,7 @@ func request(tag string) (gjson.Result, error) {
 func RandomSetu(ctx *zero.Ctx) error {
 	j, err := request("")
 	if err != nil {
-		log.Error("Failed to request url: "+SetuURL)
+		log.Error("Failed to request url: " + SetuURL)
 		return err
 	}
 
@@ -59,16 +59,16 @@ func RandomSetu(ctx *zero.Ctx) error {
 	repo := "Title: " + title + "\nPid: " + pid
 	ctx.Send(repo)
 	setu := ctx.Send(message.Image(img))
-	time.Sleep(30*time.Second)
+	time.Sleep(30 * time.Second)
 	ctx.DeleteMessage(setu)
-	log.Info("Recall setu: "+img)
+	log.Info("Recall setu: " + img)
 	return nil
 }
 
 func TagSetu(tag string, ctx *zero.Ctx) error {
 	j, err := request(tag)
 	if err != nil {
-		log.Error("Failed to request url: "+SetuURL)
+		log.Error("Failed to request url: " + SetuURL)
 		return err
 	}
 	title := j.Get("data.0.title").String()
@@ -78,8 +78,8 @@ func TagSetu(tag string, ctx *zero.Ctx) error {
 	repo := "Title: " + title + "\nPid: " + pid
 	ctx.Send(repo)
 	setu := ctx.Send(message.Image(img))
-	time.Sleep(30*time.Second)
+	time.Sleep(30 * time.Second)
 	ctx.DeleteMessage(setu)
-	log.Info("Recall setu: "+img)
+	log.Info("Recall setu: " + img)
 	return nil
 }

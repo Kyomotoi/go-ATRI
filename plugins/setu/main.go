@@ -25,7 +25,7 @@ func init() {
 			return ctx.Event.UserID
 		}),
 		single.WithPostFn(func(ctx *zero.Ctx) {
-			log.Info("处于涩图限制的用户："+strconv.FormatInt(ctx.Event.UserID, 10))
+			log.Info("处于涩图限制的用户：" + strconv.FormatInt(ctx.Event.UserID, 10))
 		}),
 	).Apply(engine)
 

@@ -23,6 +23,7 @@ func init() {
 	log.Info("项目地址：https://github.com/Kyomotoi/go-ATRI")
 	log.Info("当前版本：" + service.Version())
 	log.Info("后宫裙：567297659")
+	log.Info("正在导入设置...")
 	conf, err := utils.ConfigDealer()
 	if err != nil {
 		if os.IsNotExist(err) {

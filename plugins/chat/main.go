@@ -25,7 +25,7 @@ func init() {
 
 				msg := ctx.Event.Message.String()
 				userID := strconv.FormatInt(ctx.Event.UserID, 10)
-				repo, err := Kimo(msg,userID)
+				repo, err := Kimo(msg, userID)
 				if err != nil {
 					return
 				}
@@ -71,7 +71,7 @@ func init() {
 					ctx.Send("...呜呜..出故障了")
 					return
 				}
-				ctx.Send("好欸！"+cmd.Args+"ちゃん~~~")
+				ctx.Send("好欸！" + cmd.Args + "ちゃん~~~")
 			}()
 		})
 
