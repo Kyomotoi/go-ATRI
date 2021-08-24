@@ -33,7 +33,7 @@ func loadBlockUser() D {
 	filePath := fileDIR + "blockUser.json"
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		if !utils.IsExists(filePath) {
+		if os.IsNotExist(err) {
 			err = ioutil.WriteFile(filePath, []byte("{}"), 0777)
 			if err != nil {
 				log.Warning("读取用户封禁名单失败，将返回空名单")
@@ -71,7 +71,7 @@ func loadBlockGroup() D {
 	filePath := fileDIR + "blockGroup.json"
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		if !utils.IsExists(filePath) {
+		if os.IsNotExist(err) {
 			t, _ := json.Marshal(d)
 			err = ioutil.WriteFile(filePath, t, 0777)
 			if err != nil {

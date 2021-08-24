@@ -2,7 +2,6 @@ package chat
 
 import (
 	"encoding/json"
-	"github.com/Kyomotoi/go-ATRI/utils"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"math/rand"
@@ -64,9 +63,9 @@ func UpdateData() error {
 	}
 
 	filePath := "data/database/chat/kimo.json"
-	if utils.IsExists(filePath) {
-		err = os.Remove(filePath)
-		if err != nil {
+	err = os.Remove(filePath)
+	if err != nil {
+		if !os.IsNotExist(err) {
 			log.Error("删除文件失败: " + filePath + "，请尝试手动删除")
 			return err
 		}
@@ -120,15 +119,15 @@ func StoreUserNickname(userID string, nickname string) error {
 		return err
 	}
 	filePath := "data/database/chat/users.json"
-	isExist := utils.IsExists(filePath)
-	if !isExist {
-		_ = ioutil.WriteFile(filePath, []byte("{}"), 0777)
-	}
 
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		log.Error("读取文件失败: " + filePath)
-		return err
+		if os.IsNotExist(err) {
+			_ = ioutil.WriteFile(filePath, []byte("{}"), 0777)
+		} else {
+			log.Error("读取文件失败: " + filePath)
+			return err
+		}
 	}
 
 	err = json.Unmarshal(data, &userNicknameData)

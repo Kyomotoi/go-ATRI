@@ -76,10 +76,12 @@ func LoadServiceData(service string) Service {
 	var j Service
 
 	filePath := FileDIR + service + ".json"
-	if !utils.IsExists(filePath) {
-		panic("无法读取服务 " + service + " 中的信息，请重启以尝试修复该错误")
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			panic("无法读取服务 " + service + " 中的信息，请重启以尝试修复该错误")
+		}
 	}
-	data, _ := os.ReadFile(filePath)
 	_ = json.Unmarshal(data, &j)
 	return j
 }
