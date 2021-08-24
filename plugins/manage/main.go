@@ -53,7 +53,7 @@ func init() {
 				if err != nil {
 					ctx.Send("封禁失败了呢...")
 				}
-				ctx.Send("用户 "+cmd.Args+" 危！")
+				ctx.Send("用户 " + cmd.Args + " 危！")
 			}()
 		})
 
@@ -89,7 +89,7 @@ func init() {
 				if err != nil {
 					ctx.Send("解封失败了呢...")
 				}
-				ctx.Send("用户 "+cmd.Args + " 重获新生！")
+				ctx.Send("用户 " + cmd.Args + " 重获新生！")
 			}()
 		})
 
@@ -125,12 +125,12 @@ func init() {
 				if err != nil {
 					ctx.Send("封禁失败了呢...")
 				}
-				ctx.Send("群 "+cmd.Args + " 危！")
+				ctx.Send("群 " + cmd.Args + " 危！")
 			}()
 		})
 
 	zero.OnCommand("解封群", zero.SuperUserPermission).SetBlock(true).
-		Handle(func(ctx *zero.Ctx) 	{
+		Handle(func(ctx *zero.Ctx) {
 			go func() {
 				var cmd extension.CommandModel
 				err := ctx.Parse(&cmd)
@@ -161,7 +161,7 @@ func init() {
 				if err != nil {
 					ctx.Send("解封失败了呢...")
 				}
-				ctx.Send("群 "+cmd.Args+" 重获新生！")
+				ctx.Send("群 " + cmd.Args + " 重获新生！")
 			}()
 		})
 
@@ -201,7 +201,7 @@ func init() {
 				}()
 
 				ControlGlobalService(cmd.Args, true)
-				ctx.Send("完成~！服务 "+cmd.Args+" 已全局启用")
+				ctx.Send("完成~！服务 " + cmd.Args + " 已全局启用")
 			}()
 		})
 
@@ -241,7 +241,7 @@ func init() {
 				}()
 
 				ControlGlobalService(cmd.Args, false)
-				ctx.Send("完成~！服务 "+cmd.Args+" 已全局禁用")
+				ctx.Send("完成~！服务 " + cmd.Args + " 已全局禁用")
 			}()
 		})
 
@@ -287,7 +287,7 @@ func init() {
 
 				groupID := strconv.FormatInt(ctx.Event.GroupID, 10)
 				ControlGroupService(cmd.Args, groupID, true)
-				ctx.Send("完成！～已允许本群使用服务："+cmd.Args)
+				ctx.Send("完成！～已允许本群使用服务：" + cmd.Args)
 			}()
 		})
 
@@ -333,7 +333,7 @@ func init() {
 
 				groupID := strconv.FormatInt(ctx.Event.GroupID, 10)
 				ControlGroupService(cmd.Args, groupID, false)
-				ctx.Send("完成！～已禁止本群使用服务："+cmd.Args)
+				ctx.Send("完成！～已禁止本群使用服务：" + cmd.Args)
 			}()
 		})
 
@@ -367,7 +367,7 @@ func init() {
 				}()
 
 				ControlUserService(aimService, aimUserID, isE)
-				ctx.Send("用户 "+aimUserID+" 服务 "+aimService+" 已处于"+isEnabled)
+				ctx.Send("用户 " + aimUserID + " 服务 " + aimService + " 已处于" + isEnabled)
 			}()
 		})
 }

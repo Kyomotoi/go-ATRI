@@ -40,7 +40,6 @@ func GenerateConfig() error {
 
 func ConfigDealer() (*Config, error) {
 	data := &Config{}
-	log.Info("正在导入设置...")
 	content, err := ioutil.ReadFile("config.yml")
 	if err != nil {
 		log.Error("无法读取 config.yml")

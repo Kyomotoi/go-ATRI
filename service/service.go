@@ -62,7 +62,7 @@ func RegisterService(service string, docs string, commands cmds) {
 	if !utils.IsExists(filePath) {
 		err := generateServiceConfig(service, docs, commands)
 		if err != nil {
-			log.Warning("服务 "+service+" 注册失败，将强制禁用，并无法启用")
+			log.Warning("服务 " + service + " 注册失败，将强制禁用，并无法启用")
 			return
 		}
 	}
@@ -76,10 +76,12 @@ func LoadServiceData(service string) Service {
 	var j Service
 
 	filePath := FileDIR + service + ".json"
-	if !utils.IsExists(filePath) {
-		panic("无法读取服务 "+service+" 中的信息，请重启以尝试修复该错误")
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			panic("无法读取服务 " + service + " 中的信息，请重启以尝试修复该错误")
+		}
 	}
-	data, _ := os.ReadFile(filePath)
 	_ = json.Unmarshal(data, &j)
 	return j
 }
@@ -87,12 +89,12 @@ func LoadServiceData(service string) Service {
 func StoreServiceData(serv string, d Service) {
 	filePath := FileDIR + serv + ".json"
 	if !utils.IsExists(filePath) {
-		panic("无法读取服务 "+serv+" 中的信息，请重启以尝试修复该错误")
+		panic("无法读取服务 " + serv + " 中的信息，请重启以尝试修复该错误")
 	}
 
 	data, _ := json.Marshal(d)
 	err := ioutil.WriteFile(filePath, data, 0777)
 	if err != nil {
-		panic("写入服务 "+serv+" 时失败，请检查是否给予程序足够的权限")
+		panic("写入服务 " + serv + " 时失败，请检查是否给予程序足够的权限")
 	}
 }

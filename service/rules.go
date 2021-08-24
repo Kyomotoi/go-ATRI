@@ -20,7 +20,7 @@ func checkMaDIR() {
 		if !os.IsExist(err) {
 			err := os.MkdirAll(manageDIR, 0777)
 			if err != nil {
-				log.Warning("目录 "+manageDIR+" 创建失败，请尝试手动创建")
+				log.Warning("目录 " + manageDIR + " 创建失败，请尝试手动创建")
 			}
 		}
 	}
@@ -41,7 +41,7 @@ func loadBlockList(typ string) D {
 	filePath := manageDIR + aimFile
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		if !utils.IsExists(filePath) {
+		if os.IsNotExist(err) {
 			log.Warning("封禁名单不存在，即将创建")
 			t, _ := json.Marshal(d)
 			err = ioutil.WriteFile(filePath, t, 0777)

@@ -2,7 +2,6 @@ package chat
 
 import (
 	"encoding/json"
-	"github.com/Kyomotoi/go-ATRI/utils"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"math/rand"
@@ -36,12 +35,12 @@ func generateData() error {
 	url := "https://cdn.jsdelivr.net/gh/Kyomotoi/AnimeThesaurus/data.json"
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Error("请求失败: "+url)
+		log.Error("请求失败: " + url)
 		return err
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		log.Error("请求失败: "+url)
+		log.Error("请求失败: " + url)
 		return err
 	}
 
@@ -64,10 +63,10 @@ func UpdateData() error {
 	}
 
 	filePath := "data/database/chat/kimo.json"
-	if utils.IsExists(filePath) {
-		err = os.Remove(filePath)
-		if err != nil {
-			log.Error("删除文件失败: "+filePath+"，请尝试手动删除")
+	err = os.Remove(filePath)
+	if err != nil {
+		if !os.IsNotExist(err) {
+			log.Error("删除文件失败: " + filePath + "，请尝试手动删除")
 			return err
 		}
 	}
@@ -89,18 +88,18 @@ func loadData() (map[string][]string, error) {
 	filePath := "data/database/chat/kimo.json"
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		if !utils.IsExists(filePath) {
+		if os.IsNotExist(err) {
 			err := generateData()
 			if err != nil {
 				return map[string][]string{}, err
 			}
 			data, err = ioutil.ReadFile(filePath)
 			if err != nil {
-				log.Error("读取文件失败: "+filePath)
+				log.Error("读取文件失败: " + filePath)
 				return map[string][]string{}, err
 			}
 		} else {
-			log.Error("读取文件失败: "+filePath)
+			log.Error("读取文件失败: " + filePath)
 			return map[string][]string{}, err
 		}
 	}
@@ -120,20 +119,20 @@ func StoreUserNickname(userID string, nickname string) error {
 		return err
 	}
 	filePath := "data/database/chat/users.json"
-	isExist := utils.IsExists(filePath)
-	if !isExist {
-		_ = ioutil.WriteFile(filePath, []byte("{}"), 0777)
-	}
 
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		log.Error("读取文件失败: "+filePath)
-		return err
+		if os.IsNotExist(err) {
+			_ = ioutil.WriteFile(filePath, []byte("{}"), 0777)
+		} else {
+			log.Error("读取文件失败: " + filePath)
+			return err
+		}
 	}
 
 	err = json.Unmarshal(data, &userNicknameData)
 	if err != nil {
-		log.Error("解析JSON文件失败: "+filePath)
+		log.Error("解析JSON文件失败: " + filePath)
 		return err
 	}
 	userNicknameData[userID] = nickname

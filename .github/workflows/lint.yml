@@ -1,7 +1,6 @@
-
 name: Lint
 
-on: [push,pull_request,workflow_dispatch]
+on: [ push,pull_request,workflow_dispatch ]
 
 jobs:
   golangci:
@@ -19,7 +18,7 @@ jobs:
         uses: golangci/golangci-lint-action@v2
         with:
           version: latest
-      
+
       - name: Make lint happy
         continue-on-error: true
         run: |
