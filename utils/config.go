@@ -4,8 +4,6 @@ import (
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
-	"os"
-	"time"
 )
 
 type Config struct {
@@ -18,7 +16,7 @@ type Config struct {
 	SauceNaoKey   string   `yaml:"SauceNaoKey"`
 }
 
-func generateConfig() error {
+func GenerateConfig() error {
 	conf := &Config{
 		WebsocketURL:  "ws://127.0.0.1:13140",
 		Debug:         false,
@@ -40,34 +38,16 @@ func generateConfig() error {
 	return nil
 }
 
-func InitConfig() error {
-	if IsExists("config.yml") {
-		log.Info("正在导入设置...")
-		log.Info("即将使用 config.yml 内的配置启动ATRI")
-		time.Sleep(time.Second*3)
-	} else {
-		log.Warning("检查为初次启动，已自动于同目录下生成 config.yml，请配置并重新启动！")
-		err := generateConfig()
-		if err != nil {
-			log.Error("无法创建文件：config.yml，请确认是否给足系统权限")
-			return err
-		}
-		log.Warning("将于5秒后退出")
-		time.Sleep(time.Second * 5)
-		os.Exit(1)
-	}
-	return nil
-}
-
-func ConfigDealer() (Config, error) {
-	var data Config
-
+func ConfigDealer() (*Config, error) {
+	data := &Config{}
+	log.Info("正在导入设置...")
 	content, err := ioutil.ReadFile("config.yml")
 	if err != nil {
 		log.Error("无法读取 config.yml")
 		return data, err
 	}
-	err = yaml.Unmarshal(content, &data)
+	log.Info("即将使用 config.yml 内的配置启动ATRI")
+	err = yaml.Unmarshal(content, data)
 	if err != nil {
 		log.Error("解析 config.yml 失败，请检查格式、内容是否输入正确")
 		return data, err
