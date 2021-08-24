@@ -23,9 +23,17 @@ func init() {
 	log.Info("项目地址：https://github.com/Kyomotoi/go-ATRI")
 	log.Info("当前版本：" + service.Version())
 	log.Info("后宫裙：567297659")
-	var conf, err = utils.ConfigDealer()
+	conf, err := utils.ConfigDealer()
 	if err != nil {
-		log.Warning("处理 config.yml 失败")
+		if os.IsNotExist(err) {
+			log.Warning("检查为初次启动，已自动于同目录下生成 config.yml，请配置并重新启动！")
+			genErr := utils.GenerateConfig()
+			if genErr != nil {
+				log.Error("无法创建文件：config.yml，请确认是否给足系统权限")
+			}
+		} else {
+			log.Warning("处理 config.yml 失败")
+		}
 		log.Warning("将于5秒后退出")
 		time.Sleep(time.Second * 5)
 		os.Exit(1)
