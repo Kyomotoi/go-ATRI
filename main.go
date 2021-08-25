@@ -5,7 +5,6 @@ import (
 	_ "github.com/Kyomotoi/go-ATRI/plugins/help"
 	_ "github.com/Kyomotoi/go-ATRI/plugins/manage"
 	_ "github.com/Kyomotoi/go-ATRI/plugins/setu"
-	_ "github.com/Kyomotoi/go-ATRI/plugins/waifu2x"
 	"github.com/Kyomotoi/go-ATRI/service"
 	"github.com/Kyomotoi/go-ATRI/utils"
 	"github.com/Kyomotoi/go-ATRI/utils/terminal"

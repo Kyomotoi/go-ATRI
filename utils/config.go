@@ -14,7 +14,6 @@ type Config struct {
 	CommandPrefix string   `yaml:"CommandPrefix"`
 	AccessToken   string   `yaml:"AccessToken"`
 	SauceNaoKey   string   `yaml:"SauceNaoKey"`
-	DeepAiKey     string   `yaml:"DeepAiKey"`
 }
 
 func GenerateConfig() error {
@@ -26,7 +25,6 @@ func GenerateConfig() error {
 		CommandPrefix: "",
 		AccessToken:   "",
 		SauceNaoKey:   "",
-		DeepAiKey:     "54f7cd55-f1bb-4802-b81c-e1f466d8b273",
 	}
 	data, err := yaml.Marshal(conf)
 	if err != nil {
@@ -47,6 +45,7 @@ func ConfigDealer() (*Config, error) {
 		log.Error("无法读取 config.yml")
 		return data, err
 	}
+	log.Info("即将使用 config.yml 内的配置启动ATRI")
 	err = yaml.Unmarshal(content, data)
 	if err != nil {
 		log.Error("解析 config.yml 失败，请检查格式、内容是否输入正确")
