@@ -23,7 +23,7 @@ func init() {
 			return
 		}
 		ctx.Send("请20秒内发送一张图片")
-		next := zero.NewFutureEvent("message", 999, false, zero.CheckUser(ctx.Event.UserID))
+		next := zero.NewFutureEvent("message", 4, true, zero.CheckUser(ctx.Event.UserID))
 		recv := next.Next()
 		select {
 		case <-time.After(time.Second * 20):
@@ -31,7 +31,7 @@ func init() {
 		case e := <-recv:
 			nextCtx := &zero.Ctx{Event: e, State: zero.State{}}
 			if nextCtx.Event.Message[0].Type == "image" {
-				ctx.Send("放大中...")
+				ctx.Send("处理中...")
 				rt, err := waifu2x(nextCtx.Event.Message[0].Data["url"], deepaikey)
 				if err != nil {
 					log.Error("waifu2x: 请求api失败，error: ", err)
