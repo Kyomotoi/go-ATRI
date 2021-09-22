@@ -1,6 +1,24 @@
 name: Build
 
-on: [ push, pull_request ]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - "**/*.go"
+      - "go.mod"
+      - "go.sum"
+      - ".github/workflows/*.yml"
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "**/*.go"
+      - "go.mod"
+      - "go.sum"
+      - ".github/workflows/*.yml"
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -40,7 +58,7 @@ jobs:
         run: |
           if [ $GOOS = "windows" ]; then export BINARY_SUFFIX="$BINARY_SUFFIX.exe"; fi
           if $IS_PR ; then echo $PR_PROMPT; fi
-          export BINARY_NAME="$BINARY_PREFIX$GOOS_$GOARCH$BINARY_SUFFIX"
+          export BINARY_NAME="$BINARY_PREFIX${{ matrix.goos }}_$GOARCH$BINARY_SUFFIX"
           export CGO_ENABLED=0
           go build -o "output/$BINARY_NAME" -trimpath -ldflags "$LD_FLAGS" .
       - name: Upload artifact
@@ -49,3 +67,11 @@ jobs:
         with:
           name: ${{ matrix.goos }}_${{ matrix.goarch }}
           path: output/
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        if: github.event_name == 'release'
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: output/*
+          tag: ${{ github.ref }}
+          file_glob: true
