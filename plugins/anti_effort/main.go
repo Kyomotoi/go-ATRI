@@ -194,7 +194,7 @@ func init() {
 
 	scheduler := utils.Scheduler
 
-	_ = scheduler.AddFunc("", func() {
+	_ = scheduler.AddFunc("* 10 * * * ? ", func() {
 		log.Debug("anti_effort: 更新卷王们的数据")
 		updateData()
 	})
