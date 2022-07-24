@@ -2,17 +2,17 @@ package service
 
 import (
 	"encoding/json"
+	"os"
+	"strconv"
+
 	"github.com/Kyomotoi/go-ATRI/utils"
 	log "github.com/sirupsen/logrus"
 	zero "github.com/wdvxdr1123/ZeroBot"
-	"io/ioutil"
-	"os"
-	"strconv"
 )
 
 type D map[string]string
 
-const manageDIR = "data/database/manage/"
+const manageDIR = "data/plugins/manage/"
 
 func checkMaDIR() {
 	_, err := os.Stat(manageDIR)
@@ -33,25 +33,25 @@ func loadBlockList(typ string) D {
 	checkMaDIR()
 
 	if typ == "user" {
-		aimFile = "blockUser.json"
+		aimFile = "block_user.json"
 	} else {
-		aimFile = "blockGroup.json"
+		aimFile = "block_group.json"
 	}
 
 	filePath := manageDIR + aimFile
-	data, err := ioutil.ReadFile(filePath)
+	data, err := os.ReadFile(filePath)
 	if err != nil {
 		if os.IsNotExist(err) {
 			log.Warning("封禁名单不存在，即将创建")
 			t, _ := json.Marshal(d)
-			err = ioutil.WriteFile(filePath, t, 0777)
+			err = os.WriteFile(filePath, t, 0777)
 			if err != nil {
 				log.Warning("封禁名单写入默认参数失败，请检查是否给足权限")
 			}
 			return d
 		}
 	}
-	err = json.Unmarshal(data, &d)
+	_ = json.Unmarshal(data, &d)
 	return d
 }
 
@@ -78,24 +78,22 @@ func CheckBlock(ctx *zero.Ctx) bool {
 	return true
 }
 
-func IsServiceEnabled(serv string, ctx *zero.Ctx) bool {
-	data := LoadServiceData(serv)
+func IsServiceEnabled(serv string) zero.Rule {
+	return func(ctx *zero.Ctx) bool {
+		data := LoadServiceData(serv)
 
-	userID := strconv.FormatInt(ctx.Event.UserID, 10)
-	servBlockUserList := data.DisableUser
-	if utils.StringInArray(userID, servBlockUserList) {
-		return false
+		userID := strconv.FormatInt(ctx.Event.UserID, 10)
+		servBlockUserList := data.DisableUser
+		if utils.StringInArray(userID, servBlockUserList) {
+			return false
+		}
+
+		groupID := strconv.FormatInt(ctx.Event.GroupID, 10)
+		servBlockGroupList := data.DisableGroup
+		if utils.StringInArray(groupID, servBlockGroupList) {
+			return false
+		}
+
+		return data.Enabled
 	}
-
-	groupID := strconv.FormatInt(ctx.Event.GroupID, 10)
-	servBlockGroupList := data.DisableGroup
-	if utils.StringInArray(groupID, servBlockGroupList) {
-		return false
-	}
-
-	if !data.Enabled {
-		return false
-	}
-
-	return true
 }
