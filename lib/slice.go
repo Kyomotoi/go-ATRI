@@ -1,4 +1,4 @@
-package utils
+package lib
 
 func GetSliceByRange(d [][]string, start int, end int) [][]string {
 	if start < 0 {

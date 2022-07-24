@@ -1,8 +1,8 @@
 package antieffort
 
 import (
+	"github.com/Kyomotoi/go-ATRI/lib"
 	"github.com/Kyomotoi/go-ATRI/service"
-	"github.com/Kyomotoi/go-ATRI/utils"
 	log "github.com/sirupsen/logrus"
 	zero "github.com/wdvxdr1123/ZeroBot"
 )
@@ -63,7 +63,7 @@ func init() {
 					ctx.Send("操作失败惹...")
 					return
 				}
-				if utils.StringInArray(isJoinGlobal, joinAttitude) {
+				if lib.StringInArray(isJoinGlobal, joinAttitude) {
 					addUser(0, ctx.Event.UserID, nickname, url)
 				}
 				ctx.Send(result)
@@ -192,7 +192,7 @@ func init() {
 			ctx.Send("完成~！")
 		})
 
-	scheduler := utils.Scheduler
+	scheduler := lib.Scheduler
 
 	_ = scheduler.AddFunc("* 10 * * * ? ", func() {
 		log.Debug("anti_effort: 更新卷王们的数据")

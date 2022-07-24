@@ -1,4 +1,4 @@
-package utils
+package lib
 
 func GetMapKeys(mp map[string]string) []string {
 	j := 0

@@ -1,4 +1,4 @@
-package utils
+package configs
 
 import (
 	"os"
@@ -7,19 +7,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type Config struct {
-	WebsocketURL   string   `yaml:"WebsocketURL"`
-	Debug          bool     `yaml:"Debug"`
-	SuperUsers     []int64  `yaml:"SuperUsers"`
-	Nickname       []string `yaml:"Nickname"`
-	CommandPrefix  string   `yaml:"CommandPrefix"`
-	AccessToken    string   `yaml:"AccessToken"`
-	SetuIsUseProxy bool     `yaml:"SetuIsUseProxy"`
-	SauceNaoKey    string   `yaml:"SauceNaoKey"`
-}
-
 func GenerateConfig() error {
-	conf := &Config{
+	conf := &ConfigModel{
 		WebsocketURL:   "ws://127.0.0.1:13140",
 		Debug:          false,
 		SuperUsers:     []int64{1314000},
@@ -41,8 +30,8 @@ func GenerateConfig() error {
 	return nil
 }
 
-func ConfigDealer() (*Config, error) {
-	data := &Config{}
+func ConfigDealer() (*ConfigModel, error) {
+	data := &ConfigModel{}
 	content, err := os.ReadFile("config.yml")
 	if err != nil {
 		log.Error("未找到 config.yml")

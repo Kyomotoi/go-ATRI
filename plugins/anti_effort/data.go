@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Kyomotoi/go-ATRI/utils"
+	"github.com/Kyomotoi/go-ATRI/lib"
 	"github.com/crackcell/gotabulate"
 	log "github.com/sirupsen/logrus"
 )
@@ -23,7 +23,7 @@ const (
 )
 
 func init() {
-	exi := utils.IsDir(pluginDIR)
+	exi := lib.IsDir(pluginDIR)
 	if !exi {
 		err := os.MkdirAll(pluginDIR, 0777)
 		if err != nil {
@@ -34,7 +34,7 @@ func init() {
 
 func getData(groupID int64) AntiEffortModel {
 	filePath := pluginDIR + "/" + strconv.FormatInt(groupID, 10) + ".json"
-	if !utils.IsExists(filePath) {
+	if !lib.IsExists(filePath) {
 		return AntiEffortModel{}
 	}
 
@@ -75,7 +75,7 @@ func addUser(groupID int64, userID int64, userNickname string, wakaURL string) (
 	wakaUserID := match[1]
 
 	filePath := pluginDIR + "/" + strconv.FormatInt(groupID, 10) + ".json"
-	if !utils.IsExists(filePath) {
+	if !lib.IsExists(filePath) {
 		gen_data := &AntiEffortModel{
 			UpdateTime: "",
 			Data:       make([]AntiEffortUserModel, 0),
@@ -291,7 +291,7 @@ func genRank(data AntiEffortModel, userID int64, typ string) string {
 	tabu.SetFirstRowHeader(true)
 	tabu.SetFormat("plain")
 
-	tabled := tabu.Tabulate(utils.GetSliceByRange(table, 0, 11))
+	tabled := tabu.Tabulate(lib.GetSliceByRange(table, 0, 11))
 
 	if userRank != 0 && userCount != 0 {
 		rankMsg = "你位于第 " + strconv.Itoa(int(userRank)) + " 名"

@@ -4,14 +4,14 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/Kyomotoi/go-ATRI/utils"
+	"github.com/Kyomotoi/go-ATRI/lib"
 	log "github.com/sirupsen/logrus"
 )
 
 const serviceDIR = "data/services/"
 
 func init() {
-	exi := utils.IsDir(serviceDIR)
+	exi := lib.IsDir(serviceDIR)
 	if !exi {
 		err := os.MkdirAll(serviceDIR, 0777)
 		if err != nil {
@@ -74,7 +74,7 @@ func LoadServiceData(service string) ServiceInfo {
 
 func StoreServiceData(serv string, d ServiceInfo) {
 	filePath := serviceDIR + serv + ".json"
-	if !utils.IsExists(filePath) {
+	if !lib.IsExists(filePath) {
 		panic("无法读取服务 " + serv + " 中的信息，请重启以尝试修复该错误")
 	}
 

@@ -9,27 +9,28 @@ import (
 	_ "github.com/Kyomotoi/go-ATRI/plugins/anti_effort"
 	_ "github.com/Kyomotoi/go-ATRI/plugins/setu"
 
-	"github.com/Kyomotoi/go-ATRI/service"
-	"github.com/Kyomotoi/go-ATRI/utils"
-	"github.com/Kyomotoi/go-ATRI/utils/terminal"
+	"github.com/Kyomotoi/go-ATRI/configs"
+	"github.com/Kyomotoi/go-ATRI/internal"
+	"github.com/Kyomotoi/go-ATRI/lib"
+	"github.com/Kyomotoi/go-ATRI/lib/terminal"
 
 	log "github.com/sirupsen/logrus"
 	zero "github.com/wdvxdr1123/ZeroBot"
 	"github.com/wdvxdr1123/ZeroBot/driver"
 )
 
-var config *utils.Config
+var config *configs.ConfigModel
 
 func init() {
-	utils.InitLogger()
+	lib.InitLogger()
 	log.Info("项目地址: https://github.com/Kyomotoi/go-ATRI")
-	log.Info("当前版本：" + service.Version())
+	log.Info("当前版本：" + internal.Version())
 	log.Info("后宫裙: 567297659")
-	conf, err := utils.ConfigDealer()
+	conf, err := configs.ConfigDealer()
 	if err != nil {
 		if os.IsNotExist(err) {
 			log.Warning("检查为初次启动，已自动于同目录下生成 config.yml, 请配置并重新启动！")
-			genErr := utils.GenerateConfig()
+			genErr := configs.GenerateConfig()
 			if genErr != nil {
 				log.Error("无法创建文件: config.yml, 请确认是否给足系统权限")
 			}
@@ -58,7 +59,7 @@ func init() {
 	timelocal, _ := time.LoadLocation("Asia/Shanghai")
 	time.Local = timelocal
 
-	utils.InitSchedule()
+	lib.InitSchedule()
 	log.Info("定时任务已启动")
 
 	log.Info("アトリは、高性能ですから！")

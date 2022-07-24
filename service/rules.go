@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/Kyomotoi/go-ATRI/utils"
+	"github.com/Kyomotoi/go-ATRI/lib"
 	log "github.com/sirupsen/logrus"
 	zero "github.com/wdvxdr1123/ZeroBot"
 )
@@ -84,13 +84,13 @@ func IsServiceEnabled(serv string) zero.Rule {
 
 		userID := strconv.FormatInt(ctx.Event.UserID, 10)
 		servBlockUserList := data.DisableUser
-		if utils.StringInArray(userID, servBlockUserList) {
+		if lib.StringInArray(userID, servBlockUserList) {
 			return false
 		}
 
 		groupID := strconv.FormatInt(ctx.Event.GroupID, 10)
 		servBlockGroupList := data.DisableGroup
-		if utils.StringInArray(groupID, servBlockGroupList) {
+		if lib.StringInArray(groupID, servBlockGroupList) {
 			return false
 		}
 

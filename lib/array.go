@@ -1,4 +1,4 @@
-package utils
+package lib
 
 func StringInArray(aim string, list []string) bool {
 	for _, i := range list {
