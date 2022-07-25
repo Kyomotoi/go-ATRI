@@ -62,6 +62,13 @@ func init() {
 	lib.InitSchedule()
 	log.Info("定时任务已启动")
 
+	if conf.GoCQHTTP.Enabled {
+		err = internal.InitDriver(conf.GoCQHTTP.DownloadVersion)
+		if err != nil {
+			log.Warn("初始化内置协议端失败. 请使用外置协议端连接")
+		}
+	}
+
 	log.Info("アトリは、高性能ですから！")
 }
 
