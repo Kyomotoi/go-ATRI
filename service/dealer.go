@@ -22,12 +22,10 @@ func init() {
 
 func generateServiceConfig(service string, docs string) {
 	tData := &ServiceInfo{
-		Service:      service,
-		Docs:         docs,
-		CommandList:  make(map[string]CommandInfo),
-		Enabled:      true,
-		DisableUser:  []string{},
-		DisableGroup: []string{},
+		Service:     service,
+		Docs:        docs,
+		CommandList: make(map[string]CommandInfo),
+		Enabled:     true,
 	}
 	data, _ := json.Marshal(tData)
 

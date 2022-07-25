@@ -18,9 +18,8 @@ func NewService(name string, docs string, onlyAdmin bool, mainCommand string, ru
 func (s *Service) OnMessage(name string, docs string, rules ...zero.Rule) *zero.Matcher {
 	cmd_list := LoadCommandList(s.Service)
 	cmd_list[name+"-onmsg"] = CommandInfo{
-		Type:    "message",
-		Docs:    docs,
-		Aliases: []string{},
+		Type: "message",
+		Docs: docs,
 	}
 
 	StoneCommandList(s.Service, cmd_list)
@@ -31,9 +30,8 @@ func (s *Service) OnMessage(name string, docs string, rules ...zero.Rule) *zero.
 func (s *Service) OnNotice(name string, docs string, rules ...zero.Rule) *zero.Matcher {
 	cmd_list := LoadCommandList(s.Service)
 	cmd_list[name+"-onntc"] = CommandInfo{
-		Type:    "notice",
-		Docs:    docs,
-		Aliases: []string{},
+		Type: "notice",
+		Docs: docs,
 	}
 
 	StoneCommandList(s.Service, cmd_list)
@@ -44,9 +42,8 @@ func (s *Service) OnNotice(name string, docs string, rules ...zero.Rule) *zero.M
 func (s *Service) OnRequest(name string, docs string, rules ...zero.Rule) *zero.Matcher {
 	cmd_list := LoadCommandList(s.Service)
 	cmd_list[name+"-onreq"] = CommandInfo{
-		Type:    "request",
-		Docs:    docs,
-		Aliases: []string{},
+		Type: "request",
+		Docs: docs,
 	}
 
 	StoneCommandList(s.Service, cmd_list)
@@ -57,9 +54,8 @@ func (s *Service) OnRequest(name string, docs string, rules ...zero.Rule) *zero.
 func (s *Service) OnMetaEvent(name string, docs string, rules ...zero.Rule) *zero.Matcher {
 	cmd_list := LoadCommandList(s.Service)
 	cmd_list[name+"-onmeta"] = CommandInfo{
-		Type:    "meta",
-		Docs:    docs,
-		Aliases: []string{},
+		Type: "meta",
+		Docs: docs,
 	}
 
 	StoneCommandList(s.Service, cmd_list)
@@ -88,9 +84,8 @@ func (s *Service) OnCommand(command string, docs string, aliases []string, rules
 func (s *Service) OnRegex(pattern string, docs string, rules ...zero.Rule) *zero.Matcher {
 	cmd_list := LoadCommandList(s.Service)
 	cmd_list[pattern] = CommandInfo{
-		Type:    "regex",
-		Docs:    docs,
-		Aliases: []string{},
+		Type: "regex",
+		Docs: docs,
 	}
 
 	StoneCommandList(s.Service, cmd_list)
