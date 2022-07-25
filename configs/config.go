@@ -9,14 +9,16 @@ import (
 
 func GenerateConfig() error {
 	conf := &ConfigModel{
-		WebsocketURL:   "ws://127.0.0.1:13140",
-		Debug:          false,
-		SuperUsers:     []int64{1314000},
-		Nickname:       []string{"ATRI", "Atri", "atri", "亚托莉", "アトリ"},
-		CommandPrefix:  "",
-		AccessToken:    "",
+		WebsocketURL: "ws://127.0.0.1:13140",
+		Debug:        false,
+		SuperUsers:   []int64{1314000},
+		Nickname:     []string{"ATRI", "Atri", "atri", "亚托莉", "アトリ"},
+		GoCQHTTP: ConfigGoCQHTTPModel{
+			Enabled:         false,
+			Protocol:        "5",
+			DownloadVersion: "latest",
+		},
 		SetuIsUseProxy: true,
-		SauceNaoKey:    "",
 	}
 	data, err := yaml.Marshal(conf)
 	if err != nil {
