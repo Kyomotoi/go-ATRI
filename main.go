@@ -3,7 +3,9 @@ package main
 import (
 	// _ "github.com/Kyomotoi/go-ATRI/plugins/help"
 	// _ "github.com/Kyomotoi/go-ATRI/plugins/manage"
-	"os"
+
+	"fmt"
+	"strconv"
 	"time"
 
 	_ "github.com/Kyomotoi/go-ATRI/plugins/anti_effort"
@@ -19,31 +21,19 @@ import (
 	"github.com/wdvxdr1123/ZeroBot/driver"
 )
 
-var config *configs.ConfigModel
+var config *configs.Config
 
 func init() {
 	lib.InitLogger()
+
 	log.Info("项目地址: https://github.com/Kyomotoi/go-ATRI")
 	log.Info("当前版本：" + internal.Version())
 	log.Info("后宫裙: 567297659")
-	conf, err := configs.ConfigDealer()
-	if err != nil {
-		if os.IsNotExist(err) {
-			log.Warning("检查为初次启动，已自动于同目录下生成 config.yml, 请配置并重新启动！")
-			genErr := configs.GenerateConfig()
-			if genErr != nil {
-				log.Error("无法创建文件: config.yml, 请确认是否给足系统权限")
-			}
-		} else {
-			log.Error("处理 config.yml 失败")
-		}
-		log.Warning("将于5秒后退出...")
-		time.Sleep(time.Second * 5)
-		os.Exit(1)
-	}
-	log.Info("配置加载成功")
-	config = conf
-	if conf.Debug {
+
+	config = configs.Parse()
+	log.Info("config.yml 加载成功")
+
+	if config.Bot.Debug {
 		log.Info("DEBUG 已启用")
 		log.SetLevel(log.DebugLevel)
 	} else {
@@ -51,7 +41,7 @@ func init() {
 	}
 
 	if terminal.RunningByDoubleClick() {
-		log.Warning("不建议直接双击运行本程序，这将导致一些非可预料后果，请通过控制台启动本程序")
+		log.Warning("不建议直接双击运行本程序, 这将导致一些非可预料后果, 请通过控制台启动本程序")
 		log.Warning("将等待10秒后启动")
 		time.Sleep(time.Second * 10)
 	}
@@ -62,23 +52,33 @@ func init() {
 	lib.InitSchedule()
 	log.Info("定时任务已启动")
 
-	if conf.GoCQHTTP.Enabled {
-		err = internal.InitDriver(conf.GoCQHTTP.DownloadVersion)
+	if config.Driver.Gocqhttp.Enabled {
+		log.Info("Driver: 初始化协议中")
+		err := internal.InitDriver(
+			config.Driver.Gocqhttp.DownloadVersion,
+			config.Driver.Gocqhttp.Account,
+			config.Driver.Gocqhttp.Password,
+			config.Bot.Host,
+			strconv.Itoa(config.Bot.Port),
+			config.Driver.Gocqhttp.Protocol,
+		)
 		if err != nil {
-			log.Warn("初始化内置协议端失败. 请使用外置协议端连接")
+			log.Warn("Driver: 初始化内置协议端失败. 请使用外置协议端连接")
 		}
+		log.Info("Driver: 协议初始化完成")
 	}
 
 	log.Info("アトリは、高性能ですから！")
 }
 
 func main() {
+	wsClientURL := fmt.Sprintf("ws://%s:%d", config.Bot.Host, config.Bot.Port)
 	zero.RunAndBlock(zero.Config{
-		NickName:      config.Nickname,
-		CommandPrefix: config.CommandPrefix,
-		SuperUsers:    config.SuperUsers,
+		NickName:      config.Bot.Nickname,
+		CommandPrefix: config.Bot.CommandPrefix,
+		SuperUsers:    config.Bot.Superusers,
 		Driver: []zero.Driver{
-			driver.NewWebSocketClient(config.WebsocketURL, config.AccessToken),
+			driver.NewWebSocketClient(wsClientURL, config.Bot.AccessToken),
 		},
 	}, nil)
 	select {}

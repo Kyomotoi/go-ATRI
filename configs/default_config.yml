@@ -1,0 +1,30 @@
+bot:  # ATRI相关设置
+  host: 127.0.0.1  # 监听地址
+  port: 15551  # 监听端口
+
+  debug: false  # 是否启用调试模式
+
+  superusers: [1314000]  # 超级用户ID
+
+  nickname: [  # 昵称列表
+    "ATRI",
+    "Atri",
+    "atri",
+    "亚托莉",
+    "アトリ",
+  ]
+
+  command_prefix: ""  # 命令前缀
+  access_token: ""  # 访问密钥
+
+driver:  # 内置协议端相关设置
+  gocqhttp:
+    enabled: false  # 是否启用
+    account: 0  # 账号
+    password: ""  # 密码
+    protocol: 5  # 协议版本, 请参考文档
+    download_version: "latest"  # 下载版本
+
+plugin:  # 插件相关设置
+  setu_is_use_proxy: true  # setu: 是否使用代理
+  saucenao_key: ""  # SauceNAO: 密钥

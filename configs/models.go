@@ -1,21 +1,34 @@
 package configs
 
-type ConfigModel struct {
-	WebsocketURL   string              `yaml:"WebsocketURL"`
-	Debug          bool                `yaml:"Debug"`
-	SuperUsers     []int64             `yaml:"SuperUsers"`
-	Nickname       []string            `yaml:"Nickname"`
-	CommandPrefix  string              `yaml:"CommandPrefix"`
-	AccessToken    string              `yaml:"AccessToken"`
-	GoCQHTTP       ConfigGoCQHTTPModel `yaml:"GoCQHTTP"`
-	SetuIsUseProxy bool                `yaml:"SetuIsUseProxy"`
-	SauceNaoKey    string              `yaml:"SauceNaoKey"`
+type Config struct {
+	Bot    Bot    `yaml:"bot"`
+	Driver Driver `yaml:"driver"`
+	Plugin Plugin `yaml:"plugin"`
 }
 
-type ConfigGoCQHTTPModel struct {
-	Enabled         bool   `yaml:"Enabled"`
-	Account         string `yaml:"Account"`
-	Password        string `yaml:"Password"`
-	Protocol        string `yaml:"Protocol"`
-	DownloadVersion string `yaml:"DownloadVersion"`
+type Bot struct {
+	Host          string   `yaml:"host"`
+	Port          int      `yaml:"port"`
+	Debug         bool     `yaml:"debug"`
+	Superusers    []int64  `yaml:"superusers"`
+	Nickname      []string `yaml:"nickname"`
+	CommandPrefix string   `yaml:"command_prefix"`
+	AccessToken   string   `yaml:"access_token"`
+}
+
+type Driver struct {
+	Gocqhttp Gocqhttp `yaml:"gocqhttp"`
+}
+
+type Gocqhttp struct {
+	Enabled         bool   `yaml:"enabled"`
+	Account         int64  `yaml:"account"`
+	Password        string `yaml:"password"`
+	Protocol        int    `yaml:"protocol"`
+	DownloadVersion string `yaml:"download_version"`
+}
+
+type Plugin struct {
+	SetuIsUseProxy bool   `yaml:"setu_is_use_proxy"`
+	SaucenaoKey    string `yaml:"saucenao_key"`
 }
