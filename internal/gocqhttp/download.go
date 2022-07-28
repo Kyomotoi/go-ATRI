@@ -12,13 +12,13 @@ import (
 
 const gocqReleasesList = "https://api.github.com/repos/Mrs4s/go-cqhttp/releases"
 
-func getGoCQHTTPReleaseInfo() (GithubReleaseListModel, error) {
-	var model GithubReleaseListModel
+func getGoCQHTTPReleaseInfo() (GithubReleaseList, error) {
+	var model GithubReleaseList
 
 	resp, err := http.Get(gocqReleasesList)
 	if err != nil && resp.StatusCode != http.StatusOK {
-		log.Warn("init gocq: 在请求链接 " + gocqReleasesList + "时发生错误. Response msg: " + resp.Status)
-		log.Warn("init gocq: 内置 gocqhttp 将失效")
+		log.Warn("Driver: 在请求链接 " + gocqReleasesList + "时发生错误. Response msg: " + resp.Status)
+		log.Warn("Driver: 内置 gocqhttp 将失效")
 		return model, err
 	}
 
@@ -49,8 +49,8 @@ func downloadGoCQHTTP(v string) error {
 	}
 
 	if rli == nil {
-		log.Warn("init gocq: 没有可用的 gocqhttp 发行版")
-		return errors.New("no gocqhttp version availabled")
+		log.Warn("Driver: 没有可用的 gocqhttp 发行版")
+		return errors.New("driver: no gocqhttp version availabled")
 	}
 
 	var downloadURL string
@@ -91,7 +91,7 @@ func downloadGoCQHTTP(v string) error {
 	filePath := resourceDIR + "/" + v + "/" + getFileNameOfGoCQHTTP()
 	err = lib.DownloadFile(filePath, downloadURL)
 	if err != nil {
-		log.Warn("init gocq: 下载 gocqhttp 时发生错误. Error: " + err.Error())
+		log.Warn("Driver: 下载 gocqhttp 时发生错误. Error: " + err.Error())
 		return err
 	}
 
