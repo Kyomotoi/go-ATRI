@@ -92,5 +92,5 @@ func (g *Gener) macAddress() string {
 }
 
 func (g *Gener) incremental() string {
-	return fmt.Sprintf("%d", rand.Intn(2<<32))
+	return fmt.Sprintf("%d", rand.Int63n(2<<32))
 }
