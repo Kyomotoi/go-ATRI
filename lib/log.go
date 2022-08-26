@@ -24,7 +24,7 @@ func init() {
 func InitLogger() {
 	log.SetFormatter(&easy.Formatter{
 		TimestampFormat: "01-02 15:04:05",
-		LogFormat:       "\033[37mATRI | %time% | %lvl% >> %msg% \n",
+		LogFormat:       "ATRI | %time% | %lvl% >> %msg% \n",
 	})
 
 	now := time.Now().Format("20060102-15")

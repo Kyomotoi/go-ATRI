@@ -1,16 +1,25 @@
 package gocqhttp
 
 import (
+	"bufio"
+	"io"
 	"os"
+	"os/exec"
 	"path"
+	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/Kyomotoi/go-ATRI/internal/gocqhttp/device"
 	"github.com/Kyomotoi/go-ATRI/lib"
 	log "github.com/sirupsen/logrus"
 )
 
-const resourceDIR = "data/protocols/gocqhttp/"
+const (
+	resourceDIR = "data/protocols/gocqhttp/"
+	successMsg  = "アトリは、高性能ですから!"
+	logReg      = `\[(.*?)\] \[(.*?)\]: (.*?)$`
+)
 
 func init() {
 	exi := lib.IsDir(resourceDIR)
@@ -64,7 +73,43 @@ func InitGoCQHTTP(version string, account int64, password string, host string, p
 	wd, _ := os.Getwd()
 	dc := path.Join(wd, gocqDIR)
 
-	go lib.Run(dc+"/"+getFileNameOfGoCQHTTP(), dc, "-c", gocqDIR+"/config.yml")
+	go runner(dc+"/"+getFileNameOfGoCQHTTP(), dc, "-c", gocqDIR+"/config.yml")
 
 	return nil
+}
+
+func runner(path string, runDir string, args ...string) error {
+	cmd := exec.Command(path, args...)
+	cmd.Dir = runDir
+	cmd.Args = append([]string{}, args...)
+	stdout, _ := cmd.StdoutPipe()
+	stderr, _ := cmd.StderrPipe()
+	multi := io.MultiReader(stdout, stderr)
+	rd := bufio.NewReader(multi)
+
+	err := cmd.Start()
+	if err != nil {
+		panic(err)
+	}
+
+	go func() {
+		for {
+
+			line, _, err := rd.ReadLine()
+			if err == io.EOF {
+				break
+			}
+
+			con := string(line)
+
+			if strings.Contains(con, successMsg) {
+				log.Info("gocqhttp 已成功运行")
+			}
+
+			match := regexp.MustCompile(logReg).FindStringSubmatch(con)
+			log.Info("gocqhttp: " + match[3])
+		}
+	}()
+
+	return cmd.Wait()
 }
